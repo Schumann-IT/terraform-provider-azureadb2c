@@ -74,7 +74,7 @@ func (r *ApplicationPatch) Schema(ctx context.Context, req resource.SchemaReques
 				MarkdownDescription: "The URL to the SAML metadata for the app.",
 				Optional:            true,
 				Validators: []validator.String{
-					stringvalidator.RegexMatches(regexp.MustCompile("^.+\\:\\/\\/.+$"), "format <protocol>://<uri>"),
+					stringvalidator.RegexMatches(regexp.MustCompile(`^.+\:\/\/.+$`), "format <protocol>://<uri>"),
 				},
 			},
 		},
@@ -186,11 +186,9 @@ func patchApplication(data ApplicationPatchModel, c *msgraph.ServiceClient) erro
 		}
 		_ = json.Unmarshal(samlApplicationPatch, &patch)
 		patch["samlMetadataUrl"] = data.SamlMetadataUrl.ValueString()
-		break
 	case "trustframework":
 		_ = json.Unmarshal(trustframeworkApplicationPatch, &patch)
 		patch["samlMetadataUrl"] = nil
-		break
 	}
 	return c.PatchApplication(data.Id.ValueString(), patch)
 }
