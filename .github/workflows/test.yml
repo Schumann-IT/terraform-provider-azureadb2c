@@ -83,5 +83,8 @@ jobs:
       - run: go mod download
       - env:
           TF_ACC: "1"
+          B2C_ARM_TENANT_ID: ${{ secrets.B2C_ARM_TENANT_ID }}
+          B2C_ARM_CLIENT_ID: ${{ secrets.B2C_ARM_CLIENT_ID }}
+          B2C_ARM_CLIENT_SECRET: ${{ secrets.B2C_ARM_CLIENT_SECRET }}
         run: go test -v -cover ./internal/provider/
         timeout-minutes: 10

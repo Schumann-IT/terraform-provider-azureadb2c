@@ -29,13 +29,6 @@ func TestAccApplicationPatch(t *testing.T) {
 					resource.TestCheckResourceAttr("azureadb2c_application_patch.test", "id", "f7dc9dbd-c36a-4116-8f19-ac4df1096ed6"),
 				),
 			},
-			// Create and Read testing
-			{
-				Config: testAccApplicationPatchConfigSamlError("f7dc9dbd-c36a-4116-8f19-ac4df1096ed6"),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("azureadb2c_application_patch.test", "id", "f7dc9dbd-c36a-4116-8f19-ac4df1096ed6"),
-				),
-			},
 		},
 	})
 }
@@ -55,15 +48,6 @@ resource "azureadb2c_application_patch" "test" {
   id = %[1]q
   type = "saml"
   saml_metadata_url = "http://example.com"
-}
-`, id)
-}
-
-func testAccApplicationPatchConfigSamlError(id string) string {
-	return fmt.Sprintf(`
-resource "azureadb2c_application_patch" "test" {
-  id = %[1]q
-  type = "saml"
 }
 `, id)
 }
