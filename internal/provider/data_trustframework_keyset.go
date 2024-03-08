@@ -35,7 +35,7 @@ func (d *TrustframeworkKeySetDataSource) Metadata(_ context.Context, request dat
 func (d *TrustframeworkKeySetDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "Trustframework keyset",
+		MarkdownDescription: "Represents a trust framework keyset/policy key.",
 
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
@@ -49,7 +49,7 @@ func (d *TrustframeworkKeySetDataSource) Schema(ctx context.Context, req datasou
 				},
 			},
 			"id": schema.StringAttribute{
-				MarkdownDescription: "The id of the keyset",
+				MarkdownDescription: "Unique identifier of the trustframework keyset",
 				Optional:            true,
 				Validators: []validator.String{
 					stringvalidator.RegexMatches(
@@ -69,6 +69,7 @@ func (d *TrustframeworkKeySetDataSource) Schema(ctx context.Context, req datasou
 				},
 			},
 			"keys": schema.ListAttribute{
+				MarkdownDescription: "Represents a list of JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4.",
 				ElementType: types.ObjectType{
 					AttrTypes: map[string]attr.Type{
 						"kid": types.StringType,
@@ -132,6 +133,6 @@ func (d *TrustframeworkKeySetDataSource) Read(ctx context.Context, req datasourc
 		resp.Diagnostics.Append(diags...)
 		return
 	}
-	
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

@@ -26,15 +26,15 @@ func (p *AzureadB2c) Schema(_ context.Context, _ provider.SchemaRequest, resp *p
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"tenant_id": schema.StringAttribute{
-				MarkdownDescription: "The tenant id of the B2C directory",
+				MarkdownDescription: "The Tenant ID of the B2C directory which should be used.",
 				Optional:            true,
 			},
 			"client_id": schema.StringAttribute{
-				MarkdownDescription: "The client id of the service principal",
+				MarkdownDescription: "The Client ID which should be used for service principal authentication",
 				Optional:            true,
 			},
 			"client_secret": schema.StringAttribute{
-				MarkdownDescription: "The client secret of the service principal",
+				MarkdownDescription: "he application password to use when authenticating as a Service Principal using a Client Secret",
 				Optional:            true,
 			},
 		},

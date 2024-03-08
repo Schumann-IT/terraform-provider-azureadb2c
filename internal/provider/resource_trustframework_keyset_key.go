@@ -30,7 +30,7 @@ func (r *TrustframeworkKeySetKeyResource) Metadata(_ context.Context, req resour
 
 func (r *TrustframeworkKeySetKeyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Trustframework key",
+		MarkdownDescription: "Represents a JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4.",
 
 		Attributes: map[string]schema.Attribute{
 			"keyset_id": schema.StringAttribute{
@@ -41,7 +41,7 @@ func (r *TrustframeworkKeySetKeyResource) Schema(ctx context.Context, req resour
 				},
 			},
 			"use": schema.StringAttribute{
-				MarkdownDescription: "Set to 'sig' for signing and 'enc' for encryption.",
+				MarkdownDescription: "The use (public key use) parameter identifies the intended use of the public key. The use parameter is employed to indicate whether a public key is used for encrypting data or verifying the signature on data. Possible values are: sig (signature), enc (encryption)",
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOfCaseInsensitive("sig", "enc"),
@@ -51,7 +51,7 @@ func (r *TrustframeworkKeySetKeyResource) Schema(ctx context.Context, req resour
 				},
 			},
 			"type": schema.StringAttribute{
-				MarkdownDescription: "The type parameter identifies the cryptographic algorithm family used with the key, The valid values are RSA, OCT.",
+				MarkdownDescription: "The kty (key type) parameter identifies the cryptographic algorithm family used with the key, The valid values are rsa, oct.",
 				Required:            true,
 				Validators: []validator.String{
 					stringvalidator.OneOfCaseInsensitive("RSA", "OCT"),
@@ -61,26 +61,26 @@ func (r *TrustframeworkKeySetKeyResource) Schema(ctx context.Context, req resour
 				},
 			},
 			"data": schema.SingleNestedAttribute{
-				MarkdownDescription: "Trustframework Key",
+				MarkdownDescription: "Represents a JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4.",
 				Attributes: map[string]schema.Attribute{
 					"kid": schema.StringAttribute{
-						MarkdownDescription: "The id of the key",
+						MarkdownDescription: "The unique identifier for the key.",
 						Computed:            true,
 					},
 					"use": schema.StringAttribute{
-						MarkdownDescription: "What the key is used for.",
+						MarkdownDescription: "The use (public key use) parameter identifies the intended use of the public key. The use parameter is employed to indicate whether a public key is used for encrypting data or verifying the signature on data. Possible values are: sig (signature), enc (encryption)",
 						Computed:            true,
 					},
 					"kty": schema.StringAttribute{
-						MarkdownDescription: "The kty identifies the cryptographic algorithm family used with the key.",
+						MarkdownDescription: "The kty (key type) parameter identifies the cryptographic algorithm family used with the key, The valid values are rsa, oct.",
 						Computed:            true,
 					},
 					"n": schema.StringAttribute{
-						MarkdownDescription: "The n",
+						MarkdownDescription: "RSA Key - modulus",
 						Computed:            true,
 					},
 					"e": schema.StringAttribute{
-						MarkdownDescription: "The e",
+						MarkdownDescription: "RSA Key - public exponent",
 						Computed:            true,
 					},
 				},

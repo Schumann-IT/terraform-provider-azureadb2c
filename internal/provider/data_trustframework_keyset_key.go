@@ -30,7 +30,7 @@ func (d *TrustframeworkKeySetKeyDataSource) Metadata(_ context.Context, request 
 func (d *TrustframeworkKeySetKeyDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "Trustframework keyset key",
+		MarkdownDescription: "Represents a JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4.",
 
 		Attributes: map[string]schema.Attribute{
 			"keyset_id": schema.StringAttribute{
@@ -44,26 +44,26 @@ func (d *TrustframeworkKeySetKeyDataSource) Schema(ctx context.Context, req data
 				},
 			},
 			"data": schema.SingleNestedAttribute{
-				MarkdownDescription: "Trustframework Key",
+				MarkdownDescription: "Represents a JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4.",
 				Attributes: map[string]schema.Attribute{
 					"kid": schema.StringAttribute{
-						MarkdownDescription: "The id of the key",
+						MarkdownDescription: "The unique identifier for the key.",
 						Computed:            true,
 					},
 					"use": schema.StringAttribute{
-						MarkdownDescription: "What the key is used for.",
+						MarkdownDescription: "The use (public key use) parameter identifies the intended use of the public key. The use parameter is employed to indicate whether a public key is used for encrypting data or verifying the signature on data. Possible values are: sig (signature), enc (encryption)",
 						Computed:            true,
 					},
 					"kty": schema.StringAttribute{
-						MarkdownDescription: "The kty identifies the cryptographic algorithm family used with the key.",
+						MarkdownDescription: "The kty (key type) parameter identifies the cryptographic algorithm family used with the key, The valid values are rsa, oct.",
 						Computed:            true,
 					},
 					"n": schema.StringAttribute{
-						MarkdownDescription: "The n",
+						MarkdownDescription: "RSA Key - modulus",
 						Computed:            true,
 					},
 					"e": schema.StringAttribute{
-						MarkdownDescription: "The e",
+						MarkdownDescription: "RSA Key - public exponent",
 						Computed:            true,
 					},
 				},

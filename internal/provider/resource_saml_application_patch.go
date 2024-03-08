@@ -34,7 +34,7 @@ func (r *SamlApplicationPatchResource) Schema(_ context.Context, _ resource.Sche
 
 		Attributes: map[string]schema.Attribute{
 			"object_id": schema.StringAttribute{
-				MarkdownDescription: "The object if of the application to be patched",
+				MarkdownDescription: "The application's object ID.",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),

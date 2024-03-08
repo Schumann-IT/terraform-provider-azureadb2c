@@ -29,11 +29,11 @@ func (r *TrustframeworkKeySetCertificateResource) Metadata(_ context.Context, re
 
 func (r *TrustframeworkKeySetCertificateResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Trustframework Certificate",
+		MarkdownDescription: "Represents a JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4.",
 
 		Attributes: map[string]schema.Attribute{
 			"keyset_id": schema.StringAttribute{
-				MarkdownDescription: "The id of the keyset",
+				MarkdownDescription: "Unique identifier of the trustframework keyset",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -54,39 +54,39 @@ func (r *TrustframeworkKeySetCertificateResource) Schema(ctx context.Context, re
 				},
 			},
 			"data": schema.SingleNestedAttribute{
-				MarkdownDescription: "Trustframework Certificate data",
+				MarkdownDescription: "Represents a JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4.",
 				Attributes: map[string]schema.Attribute{
 					"kid": schema.StringAttribute{
-						MarkdownDescription: "The id of the key",
+						MarkdownDescription: "The unique identifier for the key.",
 						Computed:            true,
 					},
 					"exp": schema.Int64Attribute{
-						MarkdownDescription: "The exp of the key",
+						MarkdownDescription: "This value is a NumericDate as defined in RFC 7519 (A JSON numeric value representing the number of seconds from 1970-01-01T00:00:00Z UTC until the specified UTC date/time, ignoring leap seconds.)",
 						Computed:            true,
 					},
 					"e": schema.StringAttribute{
-						MarkdownDescription: "The e of the key",
+						MarkdownDescription: "RSA Key - public exponent",
 						Computed:            true,
 					},
 					"x5c": schema.ListAttribute{
 						ElementType:         types.StringType,
-						MarkdownDescription: "The x5c of the key",
+						MarkdownDescription: "The x5c (X.509 certificate chain) parameter contains a chain of one or more PKIX certificates RFC 5280.",
 						Computed:            true,
 					},
 					"kty": schema.StringAttribute{
-						MarkdownDescription: "The kty of the key",
+						MarkdownDescription: "The kty (key type) parameter identifies the cryptographic algorithm family used with the key, The valid values are rsa, oct.",
 						Computed:            true,
 					},
 					"n": schema.StringAttribute{
-						MarkdownDescription: "The n of the key",
+						MarkdownDescription: "RSA Key - modulus",
 						Computed:            true,
 					},
 					"x5t": schema.StringAttribute{
-						MarkdownDescription: "The x5t of the key",
+						MarkdownDescription: "The x5t (X.509 certificate SHA-1 thumbprint) parameter is a base64url-encoded SHA-1 thumbprint (also known as digest) of the DER encoding of an X.509 certificate RFC 5280.",
 						Computed:            true,
 					},
 					"nbf": schema.Int64Attribute{
-						MarkdownDescription: "The nbf of the key",
+						MarkdownDescription: "This value is a NumericDate as defined in RFC 7519 (A JSON numeric value representing the number of seconds from 1970-01-01T00:00:00Z UTC until the specified UTC date/time, ignoring leap seconds.)",
 						Computed:            true,
 					},
 				},

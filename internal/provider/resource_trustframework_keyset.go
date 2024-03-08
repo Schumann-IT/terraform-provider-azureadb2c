@@ -34,7 +34,7 @@ func (r *TrustframeworkKeySetResource) Metadata(_ context.Context, request resou
 func (r *TrustframeworkKeySetResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		// This description is used by the documentation generator and the language server.
-		MarkdownDescription: "Trustframework keyset",
+		MarkdownDescription: "Represents a trust framework keyset/policy key.",
 
 		Attributes: map[string]schema.Attribute{
 			"name": schema.StringAttribute{
@@ -51,11 +51,11 @@ func (r *TrustframeworkKeySetResource) Schema(ctx context.Context, req resource.
 				},
 			},
 			"id": schema.StringAttribute{
-				MarkdownDescription: "The id of the keyset",
+				MarkdownDescription: "Unique identifier of the trustframework keyset",
 				Computed:            true,
 			},
 			"metadata": schema.SingleNestedAttribute{
-				MarkdownDescription: "key set metadata",
+				MarkdownDescription: "metadata of the trustframework keyset",
 				Computed:            true,
 				Attributes: map[string]schema.Attribute{
 					"odata_context": schema.StringAttribute{
