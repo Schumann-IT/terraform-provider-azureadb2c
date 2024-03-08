@@ -33,3 +33,9 @@ website/vendor
 
 # Keep windows files with windows line endings
 *.winfile eol=crlf
+
+provider.json
+version.json
+version-response.json
+platform.json
+platform-response.json

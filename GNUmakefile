@@ -1,5 +1,4 @@
 KEY_ID := 51E964C56F41CCAD
-VERSION := 0.1.0
 
 default: testacc
 
@@ -23,6 +22,10 @@ create-version:
 	@echo '{"data":{"type":"registry-provider-versions","attributes":{"version":"$(VERSION)","key-id":"$(KEY_ID)","protocols":["6.0"]}}}' > version.json
 	@curl -s --header "Authorization: Bearer $(TOKEN)" --header "Content-Type: application/vnd.api+json" --request POST --data @version.json https://app.terraform.io/api/v2/organizations/schumann-it/registry-providers/private/schumann-it/azureadb2c/versions > version-response.json
 	@rm -f version.json
+
+release-version:
+	@git tag v$(VERSION)
+	@goreleaser release --clean --timeout 2h --verbose --parallelism 4 --skip=publish
 
 upload-sigs:
 	@curl -s -T dist/terraform-provider-azureadb2c_$(VERSION)_SHA256SUMS $(shell cat version-response.json | jq '.data.links."shasums-upload"')
