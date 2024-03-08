@@ -1,7 +1,7 @@
 // Copyright (c) HashiCorp, Inc.
 // SPDX-License-Identifier: MPL-2.0
 
-package provider
+package resources
 
 import (
 	"context"
@@ -24,7 +24,7 @@ import (
 // Ensure provider defined types fully satisfy framework interfaces.
 var _ resource.Resource = &ApplicationPatch{}
 
-//go:embed application/TrustframeworkPatch.json
+//go:embed ../internal/model/TrustframeworkPatch.json
 var trustframeworkApplicationPatch []byte
 
 //go:embed application/SamlPatch.json

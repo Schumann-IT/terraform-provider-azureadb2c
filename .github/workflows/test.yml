@@ -83,6 +83,9 @@ jobs:
       - run: go mod download
       - env:
           TF_ACC: "1"
+          ARM_TENANT_ID: ${{ secrets.B2C_ARM_TENANT_ID }}
+          ARM_CLIENT_ID: ${{ secrets.B2C_ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.B2C_ARM_CLIENT_SECRET }}
           B2C_ARM_TENANT_ID: ${{ secrets.B2C_ARM_TENANT_ID }}
           B2C_ARM_CLIENT_ID: ${{ secrets.B2C_ARM_CLIENT_ID }}
           B2C_ARM_CLIENT_SECRET: ${{ secrets.B2C_ARM_CLIENT_SECRET }}
