@@ -211,8 +211,8 @@ github.com/rogpeppe/go-internal v1.12.0 h1:exVL4IDcn6na9z1rAb56Vxr+CgyK3nn3O+epU
 github.com/rogpeppe/go-internal v1.12.0/go.mod h1:E+RYuTGaKKdloAfM02xzb0FW3Paa99yedzYV+kq4uf4=
 github.com/russross/blackfriday v1.6.0 h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww=
 github.com/russross/blackfriday v1.6.0/go.mod h1:ti0ldHuxg49ri4ksnFxlkCfN+hvslNlmVHqNRXXJNAY=
-github.com/schumann-it/azure-b2c-sdk-for-go v0.1.0 h1:fIAa0d4gA+vBjlno3PtkdjLNzx0kT/w6phV0lBHHsxE=
-github.com/schumann-it/azure-b2c-sdk-for-go v0.1.0/go.mod h1:3O2ollo0DZzU+RXsa/8ibK/TfDKxtxtw1cSJIzGd7HI=
+github.com/schumann-it/azure-b2c-sdk-for-go v0.2.0 h1:BEQpgqUdv2+H6Pjcgn1zG9cMHJHktbJkEm+LborFvd0=
+github.com/schumann-it/azure-b2c-sdk-for-go v0.2.0/go.mod h1:3O2ollo0DZzU+RXsa/8ibK/TfDKxtxtw1cSJIzGd7HI=
 github.com/sergi/go-diff v1.2.0 h1:XU+rvMAioB0UC3q1MFrIQy4Vo5/4VsRDQQXHsEya6xQ=
 github.com/sergi/go-diff v1.2.0/go.mod h1:STckp+ISIX8hZLjrqAeVduY0gWCT9IjLuqbuNXdaHfM=
 github.com/shopspring/decimal v1.2.0/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
