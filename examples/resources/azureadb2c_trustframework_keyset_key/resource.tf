@@ -1,9 +1,8 @@
-resource "azureadb2c_trustframework_keyset" "example" {
-  name = "example"
-}
-
 resource "azureadb2c_trustframework_keyset_key" "example" {
-  keyset_id = azureadb2c_trustframework_keyset.example.id
-  use       = "enc"
-  type      = "RSA"
+  key_set = {
+    id = "B2C_1A_ExampleContainer"
+  }
+
+  use  = "sig" # or enc
+  type = "RSA"
 }

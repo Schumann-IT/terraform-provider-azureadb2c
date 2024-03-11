@@ -3,24 +3,23 @@
 page_title: "azureadb2c_trustframework_keyset_key Resource - azureadb2c"
 subcategory: ""
 description: |-
-  Represents a JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4.
+  Manages Azure AD B2C Policy Keys https://learn.microsoft.com/en-us/azure/active-directory-b2c/policy-keys-overview?pivots=b2c-custom-policy.
 ---
 
 # azureadb2c_trustframework_keyset_key (Resource)
 
-Represents a JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4.
+Manages [Azure AD B2C Policy Keys](https://learn.microsoft.com/en-us/azure/active-directory-b2c/policy-keys-overview?pivots=b2c-custom-policy).
 
 ## Example Usage
 
 ```terraform
-resource "azureadb2c_trustframework_keyset" "example" {
-  name = "example"
-}
-
 resource "azureadb2c_trustframework_keyset_key" "example" {
-  keyset_id = azureadb2c_trustframework_keyset.example.id
-  use       = "enc"
-  type      = "RSA"
+  key_set = {
+    id = "B2C_1A_ExampleContainer"
+  }
+
+  use  = "sig" # or enc
+  type = "RSA"
 }
 ```
 
@@ -29,21 +28,36 @@ resource "azureadb2c_trustframework_keyset_key" "example" {
 
 ### Required
 
-- `keyset_id` (String) The id of the keyset
-- `type` (String) The kty (key type) parameter identifies the cryptographic algorithm family used with the key, The valid values are rsa, oct.
+- `type` (String) The kty (key type) parameter identifies the cryptographic algorithm family used with the key, Possible values are RSA, OCT, BUT: only RSA is supported currently.
 - `use` (String) The use (public key use) parameter identifies the intended use of the public key. The use parameter is employed to indicate whether a public key is used for encrypting data or verifying the signature on data. Possible values are: sig (signature), enc (encryption)
 
-### Read-Only
+### Optional
 
-- `data` (Attributes, Sensitive) Represents a JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4. (see [below for nested schema](#nestedatt--data))
+- `key_set` (Attributes) Key set data (see [below for nested schema](#nestedatt--key_set))
 
-<a id="nestedatt--data"></a>
-### Nested Schema for `data`
+<a id="nestedatt--key_set"></a>
+### Nested Schema for `key_set`
+
+Optional:
+
+- `id` (String) The id of the keyset
+- `name` (String) The name of the keyset
 
 Read-Only:
 
-- `e` (String) RSA Key - public exponent
+- `keys` (Attributes List) Represents a list of JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4. (see [below for nested schema](#nestedatt--key_set--keys))
+
+<a id="nestedatt--key_set--keys"></a>
+### Nested Schema for `key_set.keys`
+
+Read-Only:
+
+- `e` (String, Sensitive) RSA Key - public exponent
+- `exp` (Number, Sensitive) This value is a NumericDate as defined in RFC 7519 (A JSON numeric value representing the number of seconds from 1970-01-01T00:00:00Z UTC until the specified UTC date/time, ignoring leap seconds.)
 - `kid` (String) The unique identifier for the key.
 - `kty` (String) The kty (key type) parameter identifies the cryptographic algorithm family used with the key, The valid values are rsa, oct.
-- `n` (String) RSA Key - modulus
+- `n` (String, Sensitive) RSA Key - modulus
+- `nbf` (Number, Sensitive) This value is a NumericDate as defined in RFC 7519 (A JSON numeric value representing the number of seconds from 1970-01-01T00:00:00Z UTC until the specified UTC date/time, ignoring leap seconds.)
 - `use` (String) The use (public key use) parameter identifies the intended use of the public key. The use parameter is employed to indicate whether a public key is used for encrypting data or verifying the signature on data. Possible values are: sig (signature), enc (encryption)
+- `x5c` (List of String, Sensitive) The x5c (X.509 certificate chain) parameter contains a chain of one or more PKIX certificates RFC 5280.
+- `x5t` (String, Sensitive) The x5t (X.509 certificate SHA-1 thumbprint) parameter is a base64url-encoded SHA-1 thumbprint (also known as digest) of the DER encoding of an X.509 certificate RFC 5280.

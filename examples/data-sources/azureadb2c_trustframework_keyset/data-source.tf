@@ -1,3 +1,3 @@
 data "azureadb2c_trustframework_keyset" "example" {
-  name = "example"
+  name = "Example"
 }

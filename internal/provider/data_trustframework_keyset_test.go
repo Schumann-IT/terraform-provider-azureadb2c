@@ -30,24 +30,32 @@ func TestAccTrustframeworkKeySetDataSource(t *testing.T) {
 
 func testAccTrustframeworkKeySetDataSourceById(name string) string {
 	return fmt.Sprintf(`
-resource "azureadb2c_trustframework_keyset" "test" {
-  name = %[1]q
+resource "azureadb2c_trustframework_keyset_key" "test" {
+  key_set = {
+	name = %[1]q 
+  }
+  use = "enc"	
+  type = "RSA"	
 }
 
 data "azureadb2c_trustframework_keyset" "test" {
-  id = azureadb2c_trustframework_keyset.test.id
+  id = azureadb2c_trustframework_keyset_key.test.key_set.id
 }
 `, name)
 }
 
 func testAccTrustframeworkKeySetDataSourceByName(name string) string {
 	return fmt.Sprintf(`
-resource "azureadb2c_trustframework_keyset" "test" {
-  name = %[1]q
+resource "azureadb2c_trustframework_keyset_key" "test" {
+  key_set = {
+	name = %[1]q 
+  }
+  use = "enc"	
+  type = "RSA"	
 }
 
 data "azureadb2c_trustframework_keyset" "test" {
-  name = azureadb2c_trustframework_keyset.test.name
+  id = azureadb2c_trustframework_keyset_key.test.key_set.id
 }
 `, name)
 }

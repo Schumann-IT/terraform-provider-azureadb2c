@@ -3,20 +3,58 @@
 page_title: "azureadb2c Provider"
 subcategory: ""
 description: |-
-  
+  This Provider provides a few resources that are missing in the Azure Active Directory Provider https://registry.terraform.io/providers/hashicorp/azuread/latest/docs
+  but are required to fully automate Azure AD B2C https://learn.microsoft.com/en-us/azure/active-directory-b2c/overview.
+  Detailed documentation regarding the Data Sources and Resources supported by the Azure AD B2C Provider can be found in the
+  navigation to the left.
+  Interested in the provider's latest features, or want to make sure you're up to date? Check out the
+  changelog https://github.com/Schumann-IT/terraform-provider-azureadb2c/blob/main/CHANGELOG.md for version information and release notes.
+  Authenticating to Azure Active Directory
+  Authentication is currently only possible via service principal.
+  The provided service principal must at least be granted the following permissions:
+  Policy.Read.AllPolicy.ReadWrite.TrustFrameworkTrustFrameworkKeySet.Read.AllTrustFrameworkKeySet.ReadWrite.AllApplication.Read.AllApplication.ReadWrite.All
+  Please see Microsoft Graph permissions reference https://learn.microsoft.com/en-us/graph/permissions-reference and
+  Entra ID built-in roles https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/permissions-reference
 ---
 
 # azureadb2c Provider
 
+This Provider provides a few resources that are missing in the [Azure Active Directory Provider](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs)
+but are required to fully automate [Azure AD B2C](https://learn.microsoft.com/en-us/azure/active-directory-b2c/overview). 
 
+Detailed documentation regarding the Data Sources and Resources supported by the Azure AD B2C Provider can be found in the 
+navigation to the left. 
+
+Interested in the provider's latest features, or want to make sure you're up to date? Check out the 
+[changelog](https://github.com/Schumann-IT/terraform-provider-azureadb2c/blob/main/CHANGELOG.md) for version information and release notes.
+
+## Authenticating to Azure Active Directory
+
+Authentication is currently only possible via service principal.  
+
+The provided service principal must at least be granted the following permissions:
+
+- Policy.Read.All
+- Policy.ReadWrite.TrustFramework
+- TrustFrameworkKeySet.Read.All
+- TrustFrameworkKeySet.ReadWrite.All
+- Application.Read.All
+- Application.ReadWrite.All
+
+Please see [Microsoft Graph permissions reference](https://learn.microsoft.com/en-us/graph/permissions-reference) and 
+[Entra ID built-in roles](https://learn.microsoft.com/en-us/entra/identity/role-based-access-control/permissions-reference)
 
 ## Example Usage
 
 ```terraform
+# authentication params are sources from B2C_* environment variables
+provider "azureadb2c" {}
+
+# provide authentication params directly
 provider "azureadb2c" {
-  tenant_id     = "<tenant_id>"     # will be sourced from B2C_ARM_TENANT_ID if omitted
-  client_id     = "<client_id>"     # will be sourced from B2C_ARM_CLIENT_ID if omitted
-  client_secret = "<client_secret>" # will be sourced from B2C_ARM_CLIENT_SECRET if omitted
+  tenant_id     = "<tenant_id>"
+  client_id     = "<client_id>"
+  client_secret = "<client_secret>"
 }
 ```
 
@@ -25,6 +63,6 @@ provider "azureadb2c" {
 
 ### Optional
 
-- `client_id` (String) The Client ID which should be used for service principal authentication
-- `client_secret` (String) he application password to use when authenticating as a Service Principal using a Client Secret
-- `tenant_id` (String) The Tenant ID of the B2C directory which should be used.
+- `client_id` (String) The Client ID which should be used when authenticating as a service principal. This can also be sourced from the `B2C_ARM_CLIENT_ID` environment variable.
+- `client_secret` (String) The application password to be used when authenticating using a client secret. This can also be sourced from the `B2C_ARM_CLIENT_SECRET` environment variable
+- `tenant_id` (String) The Tenant ID which should be used. This can also be sourced from the `B2C_ARM_TENANT_ID` environment variable.

@@ -4,17 +4,21 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	"github.com/schumann-it/azure-b2c-sdk-for-go/msgraph"
 	"github.com/schumann-it/terraform-provider-azureadb2c/internal/model"
 )
 
 var _ resource.Resource = &TrustframeworkKeySetKeyResource{}
+var _ resource.ResourceWithConfigValidators = &TrustframeworkKeySetKeyResource{}
 
 func NewTrustframeworkKeySetKeyResource() resource.Resource {
 	return &TrustframeworkKeySetKeyResource{}
@@ -24,68 +28,43 @@ type TrustframeworkKeySetKeyResource struct {
 	client *msgraph.ServiceClient
 }
 
+func (r *TrustframeworkKeySetKeyResource) ConfigValidators(_ context.Context) []resource.ConfigValidator {
+	return []resource.ConfigValidator{
+		resourcevalidator.ExactlyOneOf(
+			path.MatchRelative().AtName("key_set").AtName("id"),
+			path.MatchRelative().AtName("key_set").AtName("name"),
+		),
+	}
+}
+
 func (r *TrustframeworkKeySetKeyResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_trustframework_keyset_key"
 }
 
-func (r *TrustframeworkKeySetKeyResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *TrustframeworkKeySetKeyResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Represents a JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4.",
-
+		MarkdownDescription: "Manages [Azure AD B2C Policy Keys](https://learn.microsoft.com/en-us/azure/active-directory-b2c/policy-keys-overview?pivots=b2c-custom-policy).",
 		Attributes: map[string]schema.Attribute{
-			"keyset_id": schema.StringAttribute{
-				MarkdownDescription: "The id of the keyset",
-				Required:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-				},
-			},
+			"key_set": model.KeySetResourceSchema,
 			"use": schema.StringAttribute{
 				MarkdownDescription: "The use (public key use) parameter identifies the intended use of the public key. The use parameter is employed to indicate whether a public key is used for encrypting data or verifying the signature on data. Possible values are: sig (signature), enc (encryption)",
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOfCaseInsensitive("sig", "enc"),
+					stringvalidator.OneOf("sig", "enc"),
 				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
 			"type": schema.StringAttribute{
-				MarkdownDescription: "The kty (key type) parameter identifies the cryptographic algorithm family used with the key, The valid values are rsa, oct.",
+				MarkdownDescription: "The kty (key type) parameter identifies the cryptographic algorithm family used with the key, Possible values are RSA, OCT, BUT: only RSA is supported currently.",
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOfCaseInsensitive("RSA", "OCT"),
+					stringvalidator.OneOf("RSA"), //, "OCT"),
 				},
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
-			},
-			"data": schema.SingleNestedAttribute{
-				MarkdownDescription: "Represents a JWK (JSON Web Key). TrustFrameworkKey is a JSON data structure that represents a cryptographic key. The structure of this resource follows the format defined in RFC 7517 Section 4.",
-				Attributes: map[string]schema.Attribute{
-					"kid": schema.StringAttribute{
-						MarkdownDescription: "The unique identifier for the key.",
-						Computed:            true,
-					},
-					"use": schema.StringAttribute{
-						MarkdownDescription: "The use (public key use) parameter identifies the intended use of the public key. The use parameter is employed to indicate whether a public key is used for encrypting data or verifying the signature on data. Possible values are: sig (signature), enc (encryption)",
-						Computed:            true,
-					},
-					"kty": schema.StringAttribute{
-						MarkdownDescription: "The kty (key type) parameter identifies the cryptographic algorithm family used with the key, The valid values are rsa, oct.",
-						Computed:            true,
-					},
-					"n": schema.StringAttribute{
-						MarkdownDescription: "RSA Key - modulus",
-						Computed:            true,
-					},
-					"e": schema.StringAttribute{
-						MarkdownDescription: "RSA Key - public exponent",
-						Computed:            true,
-					},
-				},
-				Computed:  true,
-				Sensitive: true,
 			},
 		},
 	}
@@ -111,54 +90,74 @@ func (r *TrustframeworkKeySetKeyResource) Configure(_ context.Context, req resou
 }
 
 func (r *TrustframeworkKeySetKeyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data model.KeySetKeyResource
+	var key model.KeySetKey
+	var keySet model.KeySet
 
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &key)...)
+	resp.Diagnostics.Append(key.KeySet.As(ctx, &keySet, basetypes.ObjectAsOptions{})...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	key, err := r.client.GenerateKey(data.KeySetId.ValueString(), data.Use.ValueString(), data.Type.ValueString())
+	set, err := r.client.GenerateKey(keySet.GetNameOrId(), key.Use.ValueString(), key.Type.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("create key failed", err.Error())
+		resp.Diagnostics.AddError("create keyset failed", err.Error())
 		return
 	}
 
-	diags := data.Consume(key)
-	if diags != nil {
-		resp.Diagnostics.Append(diags...)
+	ksv, diags := keySet.GetObjectValue(set)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
 		return
 	}
+	key.KeySet = *ksv
 
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &key)...)
 }
 
 func (r *TrustframeworkKeySetKeyResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data model.KeySetKeyResource
+	var key model.KeySetKey
+	var keySet model.KeySet
 
-	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
+	resp.Diagnostics.Append(req.State.Get(ctx, &key)...)
+	resp.Diagnostics.Append(key.KeySet.As(ctx, &keySet, basetypes.ObjectAsOptions{})...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	set, err := r.client.GetKeySet(data.KeySetId.ValueString())
+	set, err := r.client.GetKeySet(keySet.Id.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("read key failed", err.Error())
+		resp.Diagnostics.AddError("read keyset failed", err.Error())
 		return
 	}
 
-	diags := data.Consume(set.GetKeys()[0])
-	if diags != nil {
-		resp.Diagnostics.Append(diags...)
+	ksv, diags := keySet.GetObjectValue(set)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
 		return
 	}
+	key.KeySet = *ksv
 
-	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &key)...)
 }
 
 func (r *TrustframeworkKeySetKeyResource) Update(_ context.Context, _ resource.UpdateRequest, resp *resource.UpdateResponse) {
-	resp.Diagnostics.AddWarning("cannot update", "key cannot be updated.. please delete and create new keyset.")
+	resp.Diagnostics.AddWarning("cannot update", "keyset cannot be updated.. please delete and create new keyset.")
 }
 
 func (r *TrustframeworkKeySetKeyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+	var key model.KeySetKey
+	var keySet model.KeySet
+
+	resp.Diagnostics.Append(req.State.Get(ctx, &key)...)
+	resp.Diagnostics.Append(key.KeySet.As(ctx, &keySet, basetypes.ObjectAsOptions{})...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	err := r.client.DeleteKeySet(keySet.Id.ValueString())
+	if err != nil {
+		resp.Diagnostics.AddError("delete keyset failed", err.Error())
+		return
+	}
 }

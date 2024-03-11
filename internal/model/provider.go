@@ -15,7 +15,7 @@ type Provider struct {
 	ClientSecret types.String `tfsdk:"client_secret"`
 }
 
-func (m Provider) Credential() (azcore.TokenCredential, diag.Diagnostics) {
+func (m Provider) GetCredential() (azcore.TokenCredential, diag.Diagnostics) {
 	var d diag.Diagnostics
 
 	tid := m.getWithDefault(m.TenantId, "B2C_ARM_TENANT_ID")

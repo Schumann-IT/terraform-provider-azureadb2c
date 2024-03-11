@@ -14,34 +14,53 @@ import (
 	"github.com/schumann-it/terraform-provider-azureadb2c/internal/model"
 )
 
-var _ resource.Resource = &TrustframeworkApplicationPatchResource{}
+var _ resource.Resource = &ApplicationPatchResource{}
 
-func NewTrustframeworkApplicationPatchResource() resource.Resource {
-	return &TrustframeworkApplicationPatchResource{}
+func NewApplicationPatchResource() resource.Resource {
+	return &ApplicationPatchResource{}
 }
 
-type TrustframeworkApplicationPatchResource struct {
+type ApplicationPatchResource struct {
 	client *msgraph.ServiceClient
 }
 
-func (r *TrustframeworkApplicationPatchResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_trustframework_application_patch"
+func (r *ApplicationPatchResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_application_patch"
 }
 
-func (r *TrustframeworkApplicationPatchResource) Schema(ctx context.Context, req resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *ApplicationPatchResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		MarkdownDescription: "Patch the identity experience framework app",
+		MarkdownDescription: `
+Manages special requirements for application registration within Azure AD B2C when 
+using [custom policies](https://learn.microsoft.com/en-us/azure/active-directory-b2c/user-flow-overview#custom-policies).
+
+Please refer to the following examples:
+- [Identity Experience Framework applications](https://learn.microsoft.com/en-us/azure/active-directory-b2c/tutorial-create-user-flows?pivots=b2c-custom-policy#register-identity-experience-framework-applications)
+- [SAML applications](https://learn.microsoft.com/en-us/azure/active-directory-b2c/saml-service-provider?tabs=windows&pivots=b2c-custom-policy) 
+- [Daemon applications](https://learn.microsoft.com/en-us/azure/active-directory-b2c/client-credentials-grant-flow?pivots=b2c-custom-policy) 
+
+Other applications (like web and native apps) can still be configured via [Azure Active Directory Provider](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) 
+`,
 
 		Attributes: map[string]schema.Attribute{
 			"object_id": schema.StringAttribute{
-				MarkdownDescription: "The object if of the application to be patched",
+				MarkdownDescription: "The object id of the application to be patched",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
 			},
+			"patch_file": schema.StringAttribute{
+				MarkdownDescription: "The path to the patch file. Must be an absolute path to a JSON file",
+				Required:            true,
+			},
+			"saml_metadata_url": schema.StringAttribute{
+				MarkdownDescription: "The SAML metadata url",
+				Optional:            true,
+			},
 			"data": schema.SingleNestedAttribute{
 				MarkdownDescription: "identity experience framework app data",
+				Computed:            true,
 				Attributes: map[string]schema.Attribute{
 					"id": schema.StringAttribute{
 						MarkdownDescription: "The id of the application",
@@ -65,14 +84,12 @@ func (r *TrustframeworkApplicationPatchResource) Schema(ctx context.Context, req
 						Computed:            true,
 					},
 				},
-				Computed:  true,
-				Sensitive: true,
 			},
 		},
 	}
 }
 
-func (r *TrustframeworkApplicationPatchResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
+func (r *ApplicationPatchResource) Configure(_ context.Context, req resource.ConfigureRequest, resp *resource.ConfigureResponse) {
 	if req.ProviderData == nil {
 		return
 	}
@@ -91,8 +108,8 @@ func (r *TrustframeworkApplicationPatchResource) Configure(_ context.Context, re
 	r.client = client
 }
 
-func (r *TrustframeworkApplicationPatchResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data model.TrustframeworkApplicationPatch
+func (r *ApplicationPatchResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data model.ApplicationPatch
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
@@ -100,19 +117,19 @@ func (r *TrustframeworkApplicationPatchResource) Create(ctx context.Context, req
 		return
 	}
 
-	err := r.client.PatchApplication(data.ObjectId.ValueString(), data.GetPatch())
+	p, diags := data.GetPatch()
+	if diags != nil {
+		resp.Diagnostics.Append(diags...)
+		return
+	}
+
+	app, err := r.client.PatchApplication(data.ObjectId.ValueString(), p)
 	if err != nil {
 		resp.Diagnostics.AddError("patch application failed", err.Error())
 		return
 	}
 
-	app, err := r.client.GetApplication(data.ObjectId.ValueString())
-	if err != nil {
-		resp.Diagnostics.AddError("get application failed", err.Error())
-		return
-	}
-
-	diags := data.Consume(app)
+	diags = data.Consume(app)
 	if diags != nil {
 		resp.Diagnostics.Append(diags...)
 		return
@@ -121,8 +138,8 @@ func (r *TrustframeworkApplicationPatchResource) Create(ctx context.Context, req
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *TrustframeworkApplicationPatchResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data model.TrustframeworkApplicationPatch
+func (r *ApplicationPatchResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data model.ApplicationPatch
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -145,9 +162,9 @@ func (r *TrustframeworkApplicationPatchResource) Read(ctx context.Context, req r
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r *TrustframeworkApplicationPatchResource) Update(_ context.Context, _ resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *ApplicationPatchResource) Update(_ context.Context, _ resource.UpdateRequest, resp *resource.UpdateResponse) {
 	resp.Diagnostics.AddWarning("update not implemented", "patch cannot be updated. please delete and create new.")
 }
 
-func (r *TrustframeworkApplicationPatchResource) Delete(_ context.Context, _ resource.DeleteRequest, _ *resource.DeleteResponse) {
+func (r *ApplicationPatchResource) Delete(_ context.Context, _ resource.DeleteRequest, _ *resource.DeleteResponse) {
 }
