@@ -25,7 +25,7 @@ create-version:
 
 release-version:
 	@git tag v$(VERSION)
-	@goreleaser release --clean --timeout 2h --verbose --parallelism 4 --skip=publish
+	@goreleaser release --clean --timeout 2h --verbose --parallelism 4
 
 upload-sigs:
 	@curl -s -T dist/terraform-provider-azureadb2c_$(VERSION)_SHA256SUMS $(shell cat version-response.json | jq '.data.links."shasums-upload"')
