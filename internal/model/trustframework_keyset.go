@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	KEY_SET_ID_PREFIX = "B2C_1A_%s"
+	KEY_SET_ID_PREFIX = "B2C_1A_"
 )
 
 var (
@@ -63,7 +63,7 @@ type (
 // Otherwise, the value of the Name field, prefixed with KEY_SET_ID_PREFIX is returned.
 func (ks *KeySet) GetId() string {
 	if ks.Id.IsNull() || ks.Id.IsUnknown() {
-		return fmt.Sprintf(KEY_SET_ID_PREFIX, ks.Name.ValueString())
+		return fmt.Sprintf("%s%s", KEY_SET_ID_PREFIX, ks.Name.ValueString())
 	}
 
 	return ks.Id.ValueString()
