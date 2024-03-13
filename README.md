@@ -4,6 +4,8 @@
 
 # Terraform Provider for Azure Active Directory B2C
 
+![Tests](https://github.com/Schumann-IT/terraform-provider-azureadb2c/actions/workflows/test.yml/badge.svg)
+
 - [Terraform Website](https://www.terraform.io)
 - [Azure AD B2C Provider Usage Examples](https://github.com/schumann-it/terraform-provider-azureadb2c/tree/main/examples)
 
