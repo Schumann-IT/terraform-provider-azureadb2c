@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	KEY_SET_ID_PREFIX = "B2C_1A_"
+	KEY_SET_ID_PREFIX = "B2C_1A_%s"
 )
 
 var (
@@ -93,7 +93,7 @@ func (ks *KeySet) Consume(keySet models.TrustFrameworkKeySetable) diag.Diagnosti
 	return diags
 }
 
-// GetObjectValue builds the value for the KeySetKey.KeySet and KeySetCertificate.KeySet fields
+// GetObjectValue builds the value for the KeySetKey.KeySet and KeySetCertificate.KeySet fields.
 func (ks *KeySet) GetObjectValue(keySet models.TrustFrameworkKeySetable) (*basetypes.ObjectValue, diag.Diagnostics) {
 	kv, diags := ks.buildKeysValue(keySet.GetKeys())
 	if diags != nil {

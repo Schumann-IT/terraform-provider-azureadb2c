@@ -1,6 +1,6 @@
 module github.com/schumann-it/terraform-provider-azureadb2c
 
-go 1.21
+go 1.22
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.10.0
@@ -12,7 +12,7 @@ require (
 	github.com/hashicorp/terraform-plugin-go v0.22.1
 	github.com/hashicorp/terraform-plugin-testing v1.7.0
 	github.com/microsoftgraph/msgraph-beta-sdk-go v0.97.0
-	github.com/schumann-it/azure-b2c-sdk-for-go v0.4.0
+	github.com/schumann-it/azure-b2c-sdk-for-go v0.6.0
 )
 
 require (

@@ -5,8 +5,7 @@
 # Terraform Provider for Azure Active Directory B2C
 
 - [Terraform Website](https://www.terraform.io)
-- [AzureAD Provider Documentation](https://terraform.io/docs/providers/azureadb2c/)
-- [AzureAD Provider Usage Examples](https://github.com/schumann-it/terraform-provider-azureadb2c/tree/main/examples)
+- [Azure AD B2C Provider Usage Examples](https://github.com/schumann-it/terraform-provider-azureadb2c/tree/main/examples)
 
 ## Usage Example
 
