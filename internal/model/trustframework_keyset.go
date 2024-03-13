@@ -37,12 +37,15 @@ var (
 )
 
 type (
+
+	// KeySet struct defines the structure of a key set.
 	KeySet struct {
 		Id   types.String `tfsdk:"id"`
 		Name types.String `tfsdk:"name"`
 		Keys types.List   `tfsdk:"keys"`
 	}
 
+	// KeySetKeys struct defines the structure of a key set's keys, including the attributes: E, Exp, Kid, Kty, N, Nbf, X5c, X5t, and Use.
 	KeySetKeys struct {
 		E   types.String `tfsdk:"e"`
 		Exp types.Number `tfsdk:"exp"`

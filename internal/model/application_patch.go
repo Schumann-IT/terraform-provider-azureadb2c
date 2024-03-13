@@ -14,6 +14,7 @@ import (
 	"github.com/microsoftgraph/msgraph-beta-sdk-go/models"
 )
 
+// ApplicationPatch represents a patch for an application.
 type ApplicationPatch struct {
 	ObjectId        types.String `tfsdk:"object_id"`
 	SamlMetadataUrl types.String `tfsdk:"saml_metadata_url"`
@@ -21,6 +22,12 @@ type ApplicationPatch struct {
 	Data            types.Object `tfsdk:"data"`
 }
 
+// GetPatch retrieves the patch data from the ApplicationPatch instance.
+// It reads the patch file specified in the PatchFile field, parses it as JSON,
+// and returns the patch data as a map[string]interface{}. If the patch File
+// is empty, it returns nil. If there are any errors during reading the patch file,
+// parsing JSON, or the SamlMetadataUrl field is not empty, an error will be added
+// to the diag.Diagnostics and returned along with nil patch data.
 func (a *ApplicationPatch) GetPatch() (map[string]interface{}, diag.Diagnostics) {
 	var diags diag.Diagnostics
 
