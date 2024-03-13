@@ -1,6 +1,6 @@
 module github.com/schumann-it/terraform-provider-azureadb2c
 
-go 1.22
+go 1.21
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.10.0
