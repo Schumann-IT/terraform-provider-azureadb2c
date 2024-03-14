@@ -53,10 +53,16 @@ Other applications (like web and native apps) can still be configured via [Azure
 			"patch_file": schema.StringAttribute{
 				MarkdownDescription: "The path to the patch file. Must be an absolute path to a JSON file",
 				Required:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 			},
 			"saml_metadata_url": schema.StringAttribute{
 				MarkdownDescription: "The SAML metadata url",
 				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplaceIfConfigured(),
+				},
 			},
 			"data": schema.SingleNestedAttribute{
 				MarkdownDescription: "identity experience framework app data",
@@ -163,7 +169,7 @@ func (r *ApplicationPatchResource) Read(ctx context.Context, req resource.ReadRe
 }
 
 func (r *ApplicationPatchResource) Update(_ context.Context, _ resource.UpdateRequest, resp *resource.UpdateResponse) {
-	resp.Diagnostics.AddWarning("update not implemented", "patch cannot be updated. please delete and create new.")
+	resp.Diagnostics.AddError("update not implemented", "patch cannot be updated. please delete and create new.")
 }
 
 func (r *ApplicationPatchResource) Delete(_ context.Context, _ resource.DeleteRequest, _ *resource.DeleteResponse) {
