@@ -142,7 +142,7 @@ func (r *TrustframeworkKeySetKeyResource) Read(ctx context.Context, req resource
 }
 
 func (r *TrustframeworkKeySetKeyResource) Update(_ context.Context, _ resource.UpdateRequest, resp *resource.UpdateResponse) {
-	resp.Diagnostics.AddWarning("cannot update", "keyset cannot be updated.. please delete and create new keyset.")
+	resp.Diagnostics.AddError("cannot update", "keyset cannot be updated.. please delete and create new keyset.")
 }
 
 func (r *TrustframeworkKeySetKeyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {

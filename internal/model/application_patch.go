@@ -58,7 +58,9 @@ func (a *ApplicationPatch) GetPatch() (map[string]interface{}, diag.Diagnostics)
 		return nil, diags
 	}
 
-	if !a.SamlMetadataUrl.IsNull() {
+	if a.SamlMetadataUrl.IsNull() {
+		p["samlMetadataUrl"] = nil
+	} else {
 		p["samlMetadataUrl"] = a.SamlMetadataUrl.ValueString()
 	}
 
