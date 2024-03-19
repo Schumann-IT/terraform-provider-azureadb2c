@@ -17,6 +17,7 @@ import (
 
 var _ resource.Resource = &TrustframeworkKeySetCertificateResource{}
 var _ resource.ResourceWithConfigValidators = &TrustframeworkKeySetCertificateResource{}
+var _ resource.ResourceWithImportState = &TrustframeworkKeySetCertificateResource{}
 
 func NewTrustframeworkKeySetCertificateResource() resource.Resource {
 	return &TrustframeworkKeySetCertificateResource{}
@@ -153,4 +154,8 @@ func (r *TrustframeworkKeySetCertificateResource) Delete(ctx context.Context, re
 		resp.Diagnostics.AddError("delete keyset failed", err.Error())
 		return
 	}
+}
+
+func (r *TrustframeworkKeySetCertificateResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	resource.ImportStatePassthroughID(ctx, path.Root("key_set").AtName("id"), req, resp)
 }

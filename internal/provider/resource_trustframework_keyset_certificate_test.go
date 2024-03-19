@@ -19,6 +19,16 @@ func TestAccTrustframeworkKeySetCertificateResource(t *testing.T) {
 					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_certificate.test", "key_set.keys.0.kty", "RSA"),
 				),
 			},
+			// ImportState testing
+			{
+				ResourceName:                         "azureadb2c_trustframework_keyset_certificate.test",
+				ImportState:                          true,
+				ImportStateId:                        "B2C_1A_TestContainer",
+				ImportStateVerify:                    true,
+				ImportStateVerifyIdentifierAttribute: "key_set.id",
+				// certificate and password are not returned by the api, so we need to ignore these fields
+				ImportStateVerifyIgnore: []string{"certificate", "password"},
+			},
 		},
 	})
 }
