@@ -9,7 +9,7 @@ import (
 )
 
 func TestAccApplicationPatchResource(t *testing.T) {
-	expected := acceptance.RandAlphanumericString(1, 10)
+	expected := acceptance.RandAlphanumericStrings(1, 10)
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },

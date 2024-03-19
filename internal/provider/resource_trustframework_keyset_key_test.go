@@ -10,7 +10,7 @@ import (
 
 func TestAccTrustframeworkKeySetKeyResource(t *testing.T) {
 	var expected []map[string]string
-	for _, n := range acceptance.RandAlphanumericString(2, 10) {
+	for _, n := range acceptance.RandAlphanumericStrings(2, 10) {
 		expected = append(expected, map[string]string{
 			"name": n,
 			"id":   fmt.Sprintf("B2C_1A_%s", n),

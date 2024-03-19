@@ -9,7 +9,7 @@ import (
 )
 
 func TestAccTrustframeworkKeySetCertificateResource(t *testing.T) {
-	names := acceptance.RandAlphanumericString(1, 10)
+	names := acceptance.RandAlphanumericStrings(1, 10)
 
 	var expected []map[string]string
 	for _, n := range names {
