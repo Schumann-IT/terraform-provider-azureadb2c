@@ -13,47 +13,55 @@ func TestAccTrustframeworkKeySetKeyResource(t *testing.T) {
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccTrustframeworkKeySetKeyResource("B2C_1A_TestContainer", "sig"),
+				Config: testAccTrustframeworkKeySetKeyResourceByIdSig(),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.test", "key_set.name", "TestContainer"),
-					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.test", "key_set.keys.#", "1"),
-					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.test", "key_set.keys.0.use", "sig"),
-					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.test", "key_set.keys.0.kty", "RSA"),
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.testsig", "key_set.name", "TestContainerSig"),
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.testsig", "key_set.keys.#", "1"),
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.testsig", "key_set.keys.0.use", "sig"),
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.testsig", "key_set.keys.0.kty", "RSA"),
 				),
 			},
 			{
-				Config: testAccTrustframeworkKeySetKeyResourceByName("TestContainer", "enc"),
+				Config: testAccTrustframeworkKeySetKeyResourceByNameEnc(),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.test", "key_set.id", "B2C_1A_TestContainer"),
-					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.test", "key_set.keys.#", "1"),
-					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.test", "key_set.keys.0.use", "enc"),
-					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.test", "key_set.keys.0.kty", "RSA"),
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.testenc", "key_set.id", "B2C_1A_TestContainerEnc"),
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.testenc", "key_set.keys.#", "1"),
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.testenc", "key_set.keys.0.use", "enc"),
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.testenc", "key_set.keys.0.kty", "RSA"),
 				),
+			},
+			// ImportState testing
+			{
+				ResourceName:                         "azureadb2c_trustframework_keyset_key.testenc",
+				ImportState:                          true,
+				ImportStateId:                        "B2C_1A_TestContainerEnc",
+				ImportStateVerify:                    true,
+				ImportStateVerifyIdentifierAttribute: "key_set.id",
 			},
 		},
 	})
 }
 
-func testAccTrustframeworkKeySetKeyResource(id, enc string) string {
+func testAccTrustframeworkKeySetKeyResourceByIdSig() string {
 	return fmt.Sprintf(`
-resource "azureadb2c_trustframework_keyset_key" "test" {
+resource "azureadb2c_trustframework_keyset_key" "testsig" {
   key_set = {
-	id = %[1]q 
+	id = "B2C_1A_TestContainerSig" 
   }
-  use = %[2]q	
+  use = "sig"
   type = "RSA"	
 }
-`, id, enc)
+`)
 }
 
-func testAccTrustframeworkKeySetKeyResourceByName(name, enc string) string {
+func testAccTrustframeworkKeySetKeyResourceByNameEnc() string {
 	return fmt.Sprintf(`
-resource "azureadb2c_trustframework_keyset_key" "test" {
+resource "azureadb2c_trustframework_keyset_key" "testenc" {
   key_set = {
-	name = %[1]q 
+	name = "TestContainerEnc" 
   }
-  use = %[2]q	
+  use = "enc"
   type = "RSA"	
 }
-`, name, enc)
+`)
 }

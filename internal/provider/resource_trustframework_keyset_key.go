@@ -19,6 +19,7 @@ import (
 
 var _ resource.Resource = &TrustframeworkKeySetKeyResource{}
 var _ resource.ResourceWithConfigValidators = &TrustframeworkKeySetKeyResource{}
+var _ resource.ResourceWithImportState = &TrustframeworkKeySetKeyResource{}
 
 func NewTrustframeworkKeySetKeyResource() resource.Resource {
 	return &TrustframeworkKeySetKeyResource{}
@@ -138,6 +139,12 @@ func (r *TrustframeworkKeySetKeyResource) Read(ctx context.Context, req resource
 	}
 	key.KeySet = *ksv
 
+	diags = key.Consume(set)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &key)...)
 }
 
@@ -160,4 +167,8 @@ func (r *TrustframeworkKeySetKeyResource) Delete(ctx context.Context, req resour
 		resp.Diagnostics.AddError("delete keyset failed", err.Error())
 		return
 	}
+}
+
+func (r *TrustframeworkKeySetKeyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	resource.ImportStatePassthroughID(ctx, path.Root("key_set").AtName("id"), req, resp)
 }
