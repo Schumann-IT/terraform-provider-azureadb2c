@@ -5,17 +5,28 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/schumann-it/terraform-provider-azureadb2c/internal/acceptance"
 )
 
 func TestAccTrustframeworkKeySetCertificateResource(t *testing.T) {
+	names := acceptance.RandAlphanumericString(1, 10)
+
+	var expected []map[string]string
+	for _, n := range names {
+		expected = append(expected, map[string]string{
+			"name": n,
+			"id":   fmt.Sprintf("B2C_1A_%s", n),
+		})
+	}
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			{
-				Config: testAccTrustframeworkKeySetCertificateResource("TestContainer"),
+				Config: testAccTrustframeworkKeySetCertificateResource(expected[0]["name"]),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_certificate.test", "key_set.id", "B2C_1A_TestContainer"),
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_certificate.test", "key_set.id", expected[0]["id"]),
 					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_certificate.test", "key_set.keys.0.kty", "RSA"),
 				),
 			},
@@ -23,7 +34,7 @@ func TestAccTrustframeworkKeySetCertificateResource(t *testing.T) {
 			{
 				ResourceName:                         "azureadb2c_trustframework_keyset_certificate.test",
 				ImportState:                          true,
-				ImportStateId:                        "B2C_1A_TestContainer",
+				ImportStateId:                        expected[0]["id"],
 				ImportStateVerify:                    true,
 				ImportStateVerifyIdentifierAttribute: "key_set.id",
 				// certificate and password are not returned by the api, so we need to ignore these fields
