@@ -5,9 +5,12 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/schumann-it/terraform-provider-azureadb2c/internal/acceptance"
 )
 
 func TestAccApplicationPatchResource(t *testing.T) {
+	expected := acceptance.RandAlphanumericStrings(2, 10)
+
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
@@ -18,15 +21,15 @@ func TestAccApplicationPatchResource(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: testAccTrustframeworkApplicationPatchResourceConfig("IdentityExperienceFramework"),
+				Config: testAccTrustframeworkApplicationPatchResourceConfig(expected[0]),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("azureadb2c_application_patch.test", "data.display_name", "IdentityExperienceFramework"),
+					resource.TestCheckResourceAttr("azureadb2c_application_patch.test", "data.display_name", expected[0]),
 				),
 			},
 			{
-				Config: testAccSamlApplicationPatchResourceConfig("SAMLApplication", "https://metadata.example.com"),
+				Config: testAccSamlApplicationPatchResourceConfig(expected[1], "https://metadata.example.com"),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("azureadb2c_application_patch.saml", "data.display_name", "SAMLApplication"),
+					resource.TestCheckResourceAttr("azureadb2c_application_patch.saml", "data.display_name", expected[1]),
 					resource.TestCheckResourceAttr("azureadb2c_application_patch.saml", "data.saml_metadata_url", "https://metadata.example.com"),
 				),
 			},
