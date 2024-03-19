@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -43,7 +42,7 @@ func TestAccTrustframeworkKeySetKeyResource(t *testing.T) {
 }
 
 func testAccTrustframeworkKeySetKeyResourceByIdSig() string {
-	return fmt.Sprintf(`
+	return `
 resource "azureadb2c_trustframework_keyset_key" "testsig" {
   key_set = {
 	id = "B2C_1A_TestContainerSig" 
@@ -51,11 +50,11 @@ resource "azureadb2c_trustframework_keyset_key" "testsig" {
   use = "sig"
   type = "RSA"	
 }
-`)
+`
 }
 
 func testAccTrustframeworkKeySetKeyResourceByNameEnc() string {
-	return fmt.Sprintf(`
+	return `
 resource "azureadb2c_trustframework_keyset_key" "testenc" {
   key_set = {
 	name = "TestContainerEnc" 
@@ -63,5 +62,5 @@ resource "azureadb2c_trustframework_keyset_key" "testenc" {
   use = "enc"
   type = "RSA"	
 }
-`)
+`
 }
