@@ -154,6 +154,8 @@ func (r *TrustframeworkKeySetCertificateResource) Delete(ctx context.Context, re
 		resp.Diagnostics.AddError("delete keyset failed", err.Error())
 		return
 	}
+
+	_ = r.client.DeleteKeySet(fmt.Sprintf("%s.bak", keySet.Id.ValueString()))
 }
 
 func (r *TrustframeworkKeySetCertificateResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

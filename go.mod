@@ -2,6 +2,10 @@ module github.com/schumann-it/terraform-provider-azureadb2c
 
 go 1.21
 
+replace (
+	github.com/schumann-it/azure-b2c-sdk-for-go => /Users/js/Development/Projects/schumann-it/azure-b2c-sdk-for-go
+)
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.10.0
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.5.1
