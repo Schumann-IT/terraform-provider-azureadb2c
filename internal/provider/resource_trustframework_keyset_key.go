@@ -167,6 +167,8 @@ func (r *TrustframeworkKeySetKeyResource) Delete(ctx context.Context, req resour
 		resp.Diagnostics.AddError("delete keyset failed", err.Error())
 		return
 	}
+
+	_ = r.client.DeleteKeySet(fmt.Sprintf("%s.bak", keySet.Id.ValueString()))
 }
 
 func (r *TrustframeworkKeySetKeyResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {

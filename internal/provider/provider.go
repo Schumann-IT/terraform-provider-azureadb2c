@@ -83,6 +83,7 @@ func (p *AzureadB2c) Configure(ctx context.Context, req provider.ConfigureReques
 		resp.Diagnostics.AddError("invalid credentials", err.Error())
 		return
 	}
+	sc.CreateOrganizationClient(data.GetWithDefault(data.TenantId, "B2C_ARM_TENANT_ID"))
 
 	resp.DataSourceData = sc
 	resp.ResourceData = sc
@@ -93,6 +94,7 @@ func (p *AzureadB2c) Resources(_ context.Context) []func() resource.Resource {
 		NewTrustframeworkKeySetCertificateResource,
 		NewTrustframeworkKeySetKeyResource,
 		NewApplicationPatchResource,
+		NewOrganizationalBrandingLocalizationResource,
 	}
 }
 
