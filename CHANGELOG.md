@@ -1,7 +1,8 @@
 ## 0.4.0 (unreleased)
 
 FEATURES:
-* feat: support terraform versions >= 1.4 ([#8](https://github.com/Schumann-IT/terraform-provider-azureadb2c/pull/8)) 
+* feat: support terraform versions >= 1.4 ([#8](https://github.com/Schumann-IT/terraform-provider-azureadb2c/pull/8))
+* feat: add organization branding resource ([#10](https://github.com/Schumann-IT/terraform-provider-azureadb2c/pull/10))
 
 ## 0.3.0 
 
