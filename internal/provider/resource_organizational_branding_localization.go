@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
@@ -50,12 +51,13 @@ Resource that supports managing language-specific branding. While you can't chan
 				MarkdownDescription: "Color that appears in place of the background image in low-bandwidth connections. We recommend that you use the primary color of your banner logo or your organization color. Specify this in hexadecimal format, for example, white is #FFFFFF.",
 				Optional:            true,
 			},
-			"sign_in_page_text": schema.StringAttribute{
-				MarkdownDescription: "Text that appears at the bottom of the sign-in box. Use this to communicate additional information, such as the phone number to your help desk or a legal statement. This text must be in Unicode format and not exceed 1024 characters.",
+			"background_image": schema.StringAttribute{
+				MarkdownDescription: "Image that appears as the background of the sign-in page. The allowed types are PNG or JPEG not smaller than 300 KB and not larger than 1920 × 1080 pixels. A smaller image will reduce bandwidth requirements and make the page load faster.",
 				Optional:            true,
-				Validators: []validator.String{
-					stringvalidator.LengthAtMost(1024),
-				},
+			},
+			"background_image_url": schema.StringAttribute{
+				MarkdownDescription: "The URL to the background image",
+				Computed:            true,
 			},
 			"banner_logo": schema.StringAttribute{
 				MarkdownDescription: "A banner version of your company logo that appears on the sign-in page. The allowed types are PNG or JPEG not larger than 36 × 245 pixels. We recommend using a transparent image with no padding around the logo.",
@@ -64,6 +66,36 @@ Resource that supports managing language-specific branding. While you can't chan
 			"banner_logo_url": schema.StringAttribute{
 				MarkdownDescription: "The URL to the banner logo",
 				Computed:            true,
+			},
+			"sign_in_page_text": schema.StringAttribute{
+				MarkdownDescription: "Text that appears at the bottom of the sign-in box. Use this to communicate additional information, such as the phone number to your help desk or a legal statement. This text must be in Unicode format and not exceed 1024 characters.",
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthAtMost(1024),
+				},
+			},
+			"square_logo_light": schema.StringAttribute{
+				MarkdownDescription: "A square version of your company logo that appears in Windows 10 out-of-box experiences (OOBE) and when Windows Autopilot is enabled for deployment. Allowed types are PNG or JPEG not larger than 240 x 240 pixels and not more than 10 KB in size. We recommend using a transparent image with no padding around the logo.",
+				Optional:            true,
+			},
+			"square_logo_light_url": schema.StringAttribute{
+				MarkdownDescription: "The URL to the square logo (light)",
+				Computed:            true,
+			},
+			"square_logo_dark": schema.StringAttribute{
+				MarkdownDescription: "A square dark version of your company logo that appears in Windows 10 out-of-box experiences (OOBE) and when Windows Autopilot is enabled for deployment. Allowed types are PNG or JPEG not larger than 240 x 240 pixels and not more than 10 KB in size. We recommend using a transparent image with no padding around the logo.",
+				Optional:            true,
+			},
+			"square_logo_dark_url": schema.StringAttribute{
+				MarkdownDescription: "The URL to the square logo (dark)",
+				Computed:            true,
+			},
+			"username_hint_text": schema.StringAttribute{
+				MarkdownDescription: "A string that shows as the hint in the username textbox on the sign-in screen. This text must be a Unicode, without links or code, and can't exceed 64 characters.",
+				Optional:            true,
+				Validators: []validator.String{
+					stringvalidator.LengthAtMost(64),
+				},
 			},
 		},
 	}
@@ -90,7 +122,7 @@ func (r *OrganizationalBrandingLocalization) Configure(_ context.Context, req re
 
 func (r *OrganizationalBrandingLocalization) ConfigValidators(ctx context.Context) []resource.ConfigValidator {
 	return []resource.ConfigValidator{
-		resourcevalidator.AtLeastOneOf(path.MatchRoot("background_color"), path.MatchRoot("sign_in_page_text")),
+		resourcevalidator.AtLeastOneOf(path.MatchRoot("background_color"), path.MatchRoot("sign_in_page_text"), path.MatchRoot("username_hint_text")),
 	}
 }
 
@@ -127,19 +159,14 @@ func (r *OrganizationalBrandingLocalization) Create(ctx context.Context, req res
 		return
 	}
 
-	if len(data.GetBannerLogoBytes()) > 0 {
-		err = r.client.OrganizationClient.UploadBannerLogo(data.Id.ValueString(), data.GetBannerLogoBytes())
-		if err != nil {
-			resp.Diagnostics.AddError("failed to upload banner logo", err.Error())
-			return
-		}
-	} else {
-		resp.Diagnostics.AddWarning("banner logo is not set", "removing the banner logo is currently not supported. please remove it manually")
+	diags = r.uploadImages(data)
+	if diags != nil {
+		resp.Diagnostics.Append(diags...)
 	}
 
 	b, err = r.client.OrganizationClient.GetBrandingLocalization(data.Id.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("get created organizational branding", err.Error())
+		resp.Diagnostics.AddError("get created organizational branding failed", err.Error())
 		return
 	}
 	diags = data.Consume(b)
@@ -192,7 +219,6 @@ func (r *OrganizationalBrandingLocalization) Update(ctx context.Context, req res
 	diags := data.Populate(b)
 	if diags != nil {
 		resp.Diagnostics.Append(diags...)
-		return
 	}
 
 	_, err = r.client.OrganizationClient.UpdateBrandingLocalization(b)
@@ -201,28 +227,69 @@ func (r *OrganizationalBrandingLocalization) Update(ctx context.Context, req res
 		return
 	}
 
-	if len(data.GetBannerLogoBytes()) > 0 {
-		err = r.client.OrganizationClient.UploadBannerLogo(data.Id.ValueString(), data.GetBannerLogoBytes())
-		if err != nil {
-			resp.Diagnostics.AddError("failed to upload banner logo", err.Error())
-			return
-		}
-	} else {
-		resp.Diagnostics.AddWarning("banner logo is not set", "removing the banner logo is currently not supported. please remove it manually")
+	diags = r.uploadImages(data)
+	if diags != nil {
+		resp.Diagnostics.Append(diags...)
 	}
 
 	b, err = r.client.OrganizationClient.GetBrandingLocalization(data.Id.ValueString())
 	if err != nil {
-		resp.Diagnostics.AddError("get created organizational branding", err.Error())
-		return
-	}
-	diags = data.Consume(b)
-	if diags != nil {
-		resp.Diagnostics.Append(diags...)
+		resp.Diagnostics.AddError("get created organizational branding failed", err.Error())
 		return
 	}
 
+	diags = data.Consume(b)
+	if diags != nil {
+		resp.Diagnostics.Append(diags...)
+	}
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+}
+
+func (r *OrganizationalBrandingLocalization) uploadImages(data model.OrganizationalBrandingLocalization) diag.Diagnostics {
+	var diags diag.Diagnostics
+
+	if len(data.GetBannerLogoBytes()) > 0 {
+		err := r.client.OrganizationClient.UploadImage(data.Id.ValueString(), msgraph.ImageTypeBannerLogo, data.GetBannerLogoBytes())
+		if err != nil {
+			diags.AddError("failed to upload banner logo", err.Error())
+			return diags
+		}
+	} else {
+		diags.AddWarning("banner logo is not set", "removing images is currently not supported. please remove it manually")
+	}
+
+	if len(data.GetBackgroundImageBytes()) > 0 {
+		err := r.client.OrganizationClient.UploadImage(data.Id.ValueString(), msgraph.ImageTypeBackgroundImage, data.GetBackgroundImageBytes())
+		if err != nil {
+			diags.AddError("failed to upload background image", err.Error())
+			return diags
+		}
+	} else {
+		diags.AddWarning("background image is not set", "removing images is currently not supported. please remove it manually")
+	}
+
+	if len(data.GetSquareLogoLightBytes()) > 0 {
+		err := r.client.OrganizationClient.UploadImage(data.Id.ValueString(), msgraph.ImageTypeSquareLogoLight, data.GetSquareLogoLightBytes())
+		if err != nil {
+			diags.AddError("failed to upload square logo (light)", err.Error())
+			return diags
+		}
+	} else {
+		diags.AddWarning("square logo (light) is not set", "removing images is currently not supported. please remove it manually")
+	}
+
+	if len(data.GetSquareLogoDarkBytes()) > 0 {
+		err := r.client.OrganizationClient.UploadImage(data.Id.ValueString(), msgraph.ImageTypeSquareLogoDark, data.GetSquareLogoDarkBytes())
+		if err != nil {
+			diags.AddError("failed to upload square logo (dark)", err.Error())
+			return diags
+		}
+	} else {
+		diags.AddWarning("square logo (dark) is not set", "removing images is currently not supported. please remove it manually")
+	}
+
+	return diags
 }
 
 func (r *OrganizationalBrandingLocalization) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {

@@ -14,36 +14,22 @@ func TestAccOrganizationalBrandingLocalizationResource(t *testing.T) {
 			{
 				Config: testAccOrganizationalBrandingLocalizationWithBannerResource(),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("azureadb2c_organizational_branding_localization.en", "background_color", "#ffffff"),
+					resource.TestCheckResourceAttr("azureadb2c_organizational_branding_localization.en", "background_color", "#008000"),
 					resource.TestCheckResourceAttrSet("azureadb2c_organizational_branding_localization.en", "banner_logo_url"),
+					resource.TestCheckResourceAttrSet("azureadb2c_organizational_branding_localization.en", "background_image_url"),
+					resource.TestCheckResourceAttrSet("azureadb2c_organizational_branding_localization.en", "square_logo_light_url"),
+					resource.TestCheckResourceAttrSet("azureadb2c_organizational_branding_localization.en", "square_logo_dark_url"),
+					resource.TestCheckResourceAttr("azureadb2c_organizational_branding_localization.en", "username_hint_text", "Hint"),
 				),
 			},
 			{
 				Config: testAccDefaultOrganizationalBrandingLocalizationResource(),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("azureadb2c_organizational_branding_localization.default", "background_color", "#ffffff"),
-					resource.TestCheckNoResourceAttr("azureadb2c_organizational_branding_localization.default", "banner_logo_url"),
-				),
-			},
-			{
-				Config: testAccOrganizationalBrandingLocalizationResource(),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("azureadb2c_organizational_branding_localization.de", "background_color", "#00a075"),
-					resource.TestCheckNoResourceAttr("azureadb2c_organizational_branding_localization.de", "banner_logo_url"),
 				),
 			},
 		},
 	})
-}
-
-func testAccOrganizationalBrandingLocalizationResource() string {
-	return `
-resource "azureadb2c_organizational_branding_localization" "de" {
-  id = "de-DE"
-  background_color = "#00a075"
-  sign_in_page_text = "Hello"
-}
-`
 }
 
 func testAccDefaultOrganizationalBrandingLocalizationResource() string {
@@ -60,8 +46,12 @@ func testAccOrganizationalBrandingLocalizationWithBannerResource() string {
 	return `
 resource "azureadb2c_organizational_branding_localization" "en" {
   id = "en-US"
-  background_color = "#ffffff"
-  banner_logo = filebase64("./testdata/example.jpg")
+  background_color = "#008000"
+  background_image = filebase64("./testdata/backgroundimage.png") 
+  banner_logo = filebase64("./testdata/bannerlogo.jpg")
+  square_logo_light = filebase64("./testdata/squarelogolight.jpg")
+  square_logo_dark = filebase64("./testdata/squarelogodark.jpg")
+  username_hint_text = "Hint"
 }
 `
 }
