@@ -1,4 +1,6 @@
-## 0.4.0 (unreleased)
+## 0.5.0 (unreleased)
+
+## 0.4.0
 
 FEATURES:
 * feat: support terraform versions >= 1.4 ([#8](https://github.com/Schumann-IT/terraform-provider-azureadb2c/pull/8))
