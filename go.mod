@@ -7,12 +7,12 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.5.1
 	github.com/Azure/go-autorest/autorest/to v0.4.0
 	github.com/hashicorp/terraform-plugin-docs v0.18.0
-	github.com/hashicorp/terraform-plugin-framework v1.6.1
+	github.com/hashicorp/terraform-plugin-framework v1.7.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.12.0
 	github.com/hashicorp/terraform-plugin-go v0.22.1
 	github.com/hashicorp/terraform-plugin-testing v1.7.0
-	github.com/microsoftgraph/msgraph-beta-sdk-go v0.97.0
-	github.com/schumann-it/azure-b2c-sdk-for-go v0.7.0
+	github.com/microsoftgraph/msgraph-beta-sdk-go v0.98.0
+	github.com/schumann-it/azure-b2c-sdk-for-go v0.8.1
 )
 
 require (
@@ -64,11 +64,11 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mattn/go-runewidth v0.0.9 // indirect
-	github.com/microsoft/kiota-abstractions-go v1.5.6 // indirect
+	github.com/microsoft/kiota-abstractions-go v1.6.0 // indirect
 	github.com/microsoft/kiota-authentication-azure-go v1.0.2 // indirect
-	github.com/microsoft/kiota-http-go v1.3.2 // indirect
+	github.com/microsoft/kiota-http-go v1.3.3 // indirect
 	github.com/microsoft/kiota-serialization-form-go v1.0.0 // indirect
-	github.com/microsoft/kiota-serialization-json-go v1.0.6 // indirect
+	github.com/microsoft/kiota-serialization-json-go v1.0.7 // indirect
 	github.com/microsoft/kiota-serialization-multipart-go v1.0.0 // indirect
 	github.com/microsoft/kiota-serialization-text-go v1.0.0 // indirect
 	github.com/microsoftgraph/msgraph-sdk-go-core v1.1.0 // indirect
@@ -84,7 +84,7 @@ require (
 	github.com/russross/blackfriday v1.6.0 // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
-	github.com/std-uritemplate/std-uritemplate/go v0.0.54 // indirect
+	github.com/std-uritemplate/std-uritemplate/go v0.0.55 // indirect
 	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
@@ -103,7 +103,7 @@ require (
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.19.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240308144416-29370a3891b7 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240325203815-454cdb8f5daa // indirect
 	google.golang.org/grpc v1.62.1 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473 // indirect

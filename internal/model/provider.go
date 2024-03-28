@@ -18,15 +18,15 @@ type Provider struct {
 func (m Provider) GetCredential() (azcore.TokenCredential, diag.Diagnostics) {
 	var d diag.Diagnostics
 
-	tid := m.getWithDefault(m.TenantId, "B2C_ARM_TENANT_ID")
+	tid := m.GetWithDefault(m.TenantId, "B2C_ARM_TENANT_ID")
 	if tid == "" {
 		d.AddError("missing tenant_id", "must be configured or provided via B2C_ARM_TENANT_ID env var")
 	}
-	cid := m.getWithDefault(m.ClientId, "B2C_ARM_CLIENT_ID")
+	cid := m.GetWithDefault(m.ClientId, "B2C_ARM_CLIENT_ID")
 	if cid == "" {
 		d.AddError("missing client_id", "must be configured or provided via B2C_ARM_CLIENT_ID env var")
 	}
-	cs := m.getWithDefault(m.ClientSecret, "B2C_ARM_CLIENT_SECRET")
+	cs := m.GetWithDefault(m.ClientSecret, "B2C_ARM_CLIENT_SECRET")
 	if cs == "" {
 		d.AddError("missing client_secret", "must be configured or provided via B2C_ARM_CLIENT_SECRET env var")
 	}
@@ -39,7 +39,7 @@ func (m Provider) GetCredential() (azcore.TokenCredential, diag.Diagnostics) {
 	return cred, d
 }
 
-func (m Provider) getWithDefault(attr types.String, env string) string {
+func (m Provider) GetWithDefault(attr types.String, env string) string {
 	v := attr.ValueString()
 	if v != "" {
 		return v
