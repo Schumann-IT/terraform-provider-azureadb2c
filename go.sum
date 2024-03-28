@@ -183,8 +183,8 @@ github.com/microsoft/kiota-serialization-multipart-go v1.0.0 h1:3O5sb5Zj+moLBiJy
 github.com/microsoft/kiota-serialization-multipart-go v1.0.0/go.mod h1:yauLeBTpANk4L03XD985akNysG24SnRJGaveZf+p4so=
 github.com/microsoft/kiota-serialization-text-go v1.0.0 h1:XOaRhAXy+g8ZVpcq7x7a0jlETWnWrEum0RhmbYrTFnA=
 github.com/microsoft/kiota-serialization-text-go v1.0.0/go.mod h1:sM1/C6ecnQ7IquQOGUrUldaO5wj+9+v7G2W3sQ3fy6M=
-github.com/microsoftgraph/msgraph-beta-sdk-go v0.97.0 h1:fKPL/RZeSkdG0yg1HSI82fmQ9kZj5Afa2prIu7BEHBA=
-github.com/microsoftgraph/msgraph-beta-sdk-go v0.97.0/go.mod h1:X5kdjlEMI0Li+bQACC963qMQWwV995ju5Rt0C2i2RII=
+github.com/microsoftgraph/msgraph-beta-sdk-go v0.98.0 h1:CgyqVHHlI4TZrPqetAPdk0/evsJNZHE4cAw3jepSu0o=
+github.com/microsoftgraph/msgraph-beta-sdk-go v0.98.0/go.mod h1:xOYVzb/U4rXgk6Pkc70LEd0+NzgDYSLjUPxo1OsD6hQ=
 github.com/microsoftgraph/msgraph-sdk-go-core v1.1.0 h1:NB7c/n4Knj+TLaLfjsahhSqoUqoN/CtyNB0XIe/nJnM=
 github.com/microsoftgraph/msgraph-sdk-go-core v1.1.0/go.mod h1:M3w/5IFJ1u/DpwOyjsjNSVEA43y1rLOeX58suyfBhGk=
 github.com/mitchellh/copystructure v1.0.0/go.mod h1:SNtv71yrdKgLRyLFxmLdkAbkKEFWgYaq1OVrnRcwhnw=
@@ -215,8 +215,8 @@ github.com/rogpeppe/go-internal v1.12.0 h1:exVL4IDcn6na9z1rAb56Vxr+CgyK3nn3O+epU
 github.com/rogpeppe/go-internal v1.12.0/go.mod h1:E+RYuTGaKKdloAfM02xzb0FW3Paa99yedzYV+kq4uf4=
 github.com/russross/blackfriday v1.6.0 h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww=
 github.com/russross/blackfriday v1.6.0/go.mod h1:ti0ldHuxg49ri4ksnFxlkCfN+hvslNlmVHqNRXXJNAY=
-github.com/schumann-it/azure-b2c-sdk-for-go v0.8.0 h1:nI8pAOpHGCZDJBaIn6xEFU2hTr439H7yZ8mjST/gZYQ=
-github.com/schumann-it/azure-b2c-sdk-for-go v0.8.0/go.mod h1:uPv8Q2564PKAKxqR/rz0KoXpMJ7AU4UXj+Zszz4RTC8=
+github.com/schumann-it/azure-b2c-sdk-for-go v0.8.1 h1:3myBIBuUU+U1lAHeuu5eEJo9rrxEtQ1TVeja6IA2w+c=
+github.com/schumann-it/azure-b2c-sdk-for-go v0.8.1/go.mod h1:QTVTGmivnR6vWuUTX2Bq4mR9E73X7I6HJWAxoPF/Ysk=
 github.com/sergi/go-diff v1.2.0 h1:XU+rvMAioB0UC3q1MFrIQy4Vo5/4VsRDQQXHsEya6xQ=
 github.com/sergi/go-diff v1.2.0/go.mod h1:STckp+ISIX8hZLjrqAeVduY0gWCT9IjLuqbuNXdaHfM=
 github.com/shopspring/decimal v1.2.0/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
