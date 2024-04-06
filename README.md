@@ -35,8 +35,8 @@ provider "azureadb2c" {
 
 ```
 
-Further [usage documentation](https://registry.terraform.io/providers/schumann-it/azureadb2c/latest/docs) is available on the Terraform website.
-
+Further [usage documentation](https://registry.terraform.io/providers/schumann-it/azureadb2c/latest/docs) is available
+on the Terraform website.
 
 ## Developer Requirements
 
@@ -44,17 +44,20 @@ Further [usage documentation](https://registry.terraform.io/providers/schumann-i
 - [Go](https://golang.org/doc/install) 1.22.x (to build the provider plugin)
 
 If you're building on Windows, you will also need:
+
 - [Git Bash for Windows](https://git-scm.com/download/win)
 - [Make for Windows](http://gnuwin32.sourceforge.net/packages/make.htm)
 
 For *GNU32 Make*, make sure its bin path is added to your PATH environment variable.
 
-For *Git Bash for Windows*, at the step of "Adjusting your PATH environment", please choose "Use Git and optional Unix tools from Windows Command Prompt".
-
+For *Git Bash for Windows*, at the step of "Adjusting your PATH environment", please choose "Use Git and optional Unix
+tools from Windows Command Prompt".
 
 ## Developing the Provider
 
-If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version 1.16+ is *required*). You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
+If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (version
+1.16+ is *required*). You'll also need to correctly setup a [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as
+adding `$GOPATH/bin` to your `$PATH`.
 
 Clone the repository to: `$GOPATH/src/github.com/schumann-it/terraform-provider-azureadb2c`
 
@@ -63,9 +66,11 @@ $ mkdir -p $GOPATH/src/github.com/terraform-providers; cd $GOPATH/src/github.com
 $ git clone https://github.com/schumann-it/terraform-provider-azureadb2c
 ```
 
-Change to the clone directory and run `make tools` to install the dependent tooling needed to test and build the provider.
+Change to the clone directory and run `make tools` to install the dependent tooling needed to test and build the
+provider.
 
-To compile the provider, run `make build`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
+To compile the provider, run `make build`. This will build the provider and put the provider binary in the `$GOPATH/bin`
+directory.
 
 ```sh
 $ make tools
@@ -82,13 +87,16 @@ In order to test the provider, you can simply run `make test`.
 $ make test
 ```
 
-The majority of tests in the provider are Acceptance Tests - which provisions real resources in Azure. It's possible to run the entire acceptance test suite by running `make testacc` - however it's likely you'll want to run a subset, which you can do using a prefix, by running:
+The majority of tests in the provider are Acceptance Tests - which provisions real resources in Azure. It's possible to
+run the entire acceptance test suite by running `make testacc` - however it's likely you'll want to run a subset, which
+you can do using a prefix, by running:
 
 ```
 make testacc TESTARGS='-run=TestAccApplication'
 ```
 
 The following ENV variables must be set in your shell prior to running acceptance tests:
+
 - B2C_ARM_CLIENT_ID
 - B2C_ARM_CLIENT_SECRET
 - B2C_ARM_TENANT_ID
