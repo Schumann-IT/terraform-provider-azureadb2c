@@ -1,4 +1,10 @@
-## 0.5.0 (unreleased)
+## 0.6.0 (unreleased)
+
+## 0.5.0 
+
+FEATURES:
+
+* feat: support key set secret upload ([#31](https://github.com/Schumann-IT/terraform-provider-azureadb2c/pull/31))
 
 ## 0.4.1
 

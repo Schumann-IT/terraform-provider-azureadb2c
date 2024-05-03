@@ -28,12 +28,13 @@ resource "azureadb2c_trustframework_keyset_key" "example" {
 
 ### Required
 
-- `type` (String) The kty (key type) parameter identifies the cryptographic algorithm family used with the key, Possible values are RSA, OCT, BUT: only RSA is supported currently.
+- `type` (String) The kty (key type) parameter identifies the cryptographic algorithm family used with the key, Possible values are RSA, OCT.
 - `use` (String) The use (public key use) parameter identifies the intended use of the public key. The use parameter is employed to indicate whether a public key is used for encrypting data or verifying the signature on data. Possible values are: sig (signature), enc (encryption)
 
 ### Optional
 
 - `key_set` (Attributes) Key set data (see [below for nested schema](#nestedatt--key_set))
+- `secret` (String, Sensitive) This is the field that is used to send the secret.
 
 <a id="nestedatt--key_set"></a>
 ### Nested Schema for `key_set`

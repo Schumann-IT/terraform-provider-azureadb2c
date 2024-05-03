@@ -6,9 +6,7 @@ description: |-
   Manages special requirements for application registration within Azure AD B2C when
   using custom policies https://learn.microsoft.com/en-us/azure/active-directory-b2c/user-flow-overview#custom-policies.
   Please refer to the following examples:
-  - Identity Experience Framework applications https://learn.microsoft.com/en-us/azure/active-directory-b2c/tutorial-create-user-flows?pivots=b2c-custom-policy#register-identity-experience-framework-applications
-  - SAML applications https://learn.microsoft.com/en-us/azure/active-directory-b2c/saml-service-provider?tabs=windows&pivots=b2c-custom-policy
-  - Daemon applications https://learn.microsoft.com/en-us/azure/active-directory-b2c/client-credentials-grant-flow?pivots=b2c-custom-policy
+  Identity Experience Framework applications https://learn.microsoft.com/en-us/azure/active-directory-b2c/tutorial-create-user-flows?pivots=b2c-custom-policy#register-identity-experience-framework-applicationsSAML applications https://learn.microsoft.com/en-us/azure/active-directory-b2c/saml-service-provider?tabs=windows&pivots=b2c-custom-policyDaemon applications https://learn.microsoft.com/en-us/azure/active-directory-b2c/client-credentials-grant-flow?pivots=b2c-custom-policy
   Other applications (like web and native apps) can still be configured via Azure Active Directory Provider https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application
 ---
 

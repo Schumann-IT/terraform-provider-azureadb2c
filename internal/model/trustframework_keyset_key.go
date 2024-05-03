@@ -2,6 +2,7 @@ package model
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -17,6 +18,7 @@ type KeySetKey struct {
 	KeySet types.Object `tfsdk:"key_set"`
 	Use    types.String `tfsdk:"use"`
 	Type   types.String `tfsdk:"type"`
+	Secret types.String `tfsdk:"secret"`
 }
 
 func (ks *KeySetKey) Consume(keySet models.TrustFrameworkKeySetable) diag.Diagnostics {
@@ -28,8 +30,10 @@ func (ks *KeySetKey) Consume(keySet models.TrustFrameworkKeySetable) diag.Diagno
 		return diags
 	}
 
-	ks.Use = types.StringPointerValue(keys[0].GetUse())
-	ks.Type = types.StringPointerValue(keys[0].GetKty())
+	u := *keys[0].GetUse()
+	ks.Use = types.StringValue(strings.ToLower(u))
+	t := *keys[0].GetKty()
+	ks.Type = types.StringValue(strings.ToUpper(t))
 
 	return diags
 }
