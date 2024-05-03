@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
+	"github.com/microsoftgraph/msgraph-beta-sdk-go/models"
 	"github.com/schumann-it/azure-b2c-sdk-for-go/msgraph"
 	"github.com/schumann-it/terraform-provider-azureadb2c/internal/model"
 )
@@ -58,11 +59,19 @@ func (r *TrustframeworkKeySetKeyResource) Schema(_ context.Context, _ resource.S
 				},
 			},
 			"type": schema.StringAttribute{
-				MarkdownDescription: "The kty (key type) parameter identifies the cryptographic algorithm family used with the key, Possible values are RSA, OCT, BUT: only RSA is supported currently.",
+				MarkdownDescription: "The kty (key type) parameter identifies the cryptographic algorithm family used with the key, Possible values are RSA, OCT.",
 				Required:            true,
 				Validators: []validator.String{
-					stringvalidator.OneOf("RSA"), //, "OCT"),
+					stringvalidator.OneOf("RSA", "OCT"),
 				},
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			},
+			"secret": schema.StringAttribute{
+				MarkdownDescription: "This is the field that is used to send the secret.",
+				Optional:            true,
+				Sensitive:           true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -100,7 +109,13 @@ func (r *TrustframeworkKeySetKeyResource) Create(ctx context.Context, req resour
 		return
 	}
 
-	set, err := r.client.GenerateKey(keySet.GetNameOrId(), key.Use.ValueString(), key.Type.ValueString())
+	var set models.TrustFrameworkKeySetable
+	var err error
+	if key.Secret.IsNull() {
+		set, err = r.client.GenerateKey(keySet.GetNameOrId(), key.Use.ValueString(), key.Type.ValueString())
+	} else {
+		set, err = r.client.UploadSecret(keySet.GetNameOrId(), key.Use.ValueString(), key.Secret.ValueString())
+	}
 	if err != nil {
 		resp.Diagnostics.AddError("create keyset failed", err.Error())
 		return

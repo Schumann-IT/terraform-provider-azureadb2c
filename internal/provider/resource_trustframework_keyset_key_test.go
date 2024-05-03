@@ -10,7 +10,7 @@ import (
 
 func TestAccTrustframeworkKeySetKeyResource(t *testing.T) {
 	var expected []map[string]string
-	for _, n := range acceptance.RandAlphanumericStrings(2, 10) {
+	for _, n := range acceptance.RandAlphanumericStrings(3, 10) {
 		expected = append(expected, map[string]string{
 			"name": n,
 			"id":   fmt.Sprintf("B2C_1A_%s", n),
@@ -47,6 +47,15 @@ func TestAccTrustframeworkKeySetKeyResource(t *testing.T) {
 				ImportStateVerify:                    true,
 				ImportStateVerifyIdentifierAttribute: "key_set.id",
 			},
+			{
+				Config: testAccTrustframeworkKeySetKeySecretResourceByIdSig(expected[2]["id"]),
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.testsecretsig", "key_set.name", expected[2]["name"]),
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.testsecretsig", "key_set.keys.#", "1"),
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.testsecretsig", "key_set.keys.0.use", "sig"),
+					resource.TestCheckResourceAttr("azureadb2c_trustframework_keyset_key.testsecretsig", "key_set.keys.0.kty", "oct"),
+				),
+			},
 		},
 	})
 }
@@ -73,4 +82,17 @@ resource "azureadb2c_trustframework_keyset_key" "testenc" {
   type = "RSA"	
 }
 `, name)
+}
+
+func testAccTrustframeworkKeySetKeySecretResourceByIdSig(id string) string {
+	return fmt.Sprintf(`
+resource "azureadb2c_trustframework_keyset_key" "testsecretsig" {
+  key_set = {
+	id = %[1]q
+  }
+  use = "sig"
+  type = "OCT"	
+  secret = "secret"	
+}
+`, id)
 }

@@ -223,6 +223,8 @@ github.com/schumann-it/azure-b2c-sdk-for-go v0.8.1 h1:3myBIBuUU+U1lAHeuu5eEJo9rr
 github.com/schumann-it/azure-b2c-sdk-for-go v0.8.1/go.mod h1:QTVTGmivnR6vWuUTX2Bq4mR9E73X7I6HJWAxoPF/Ysk=
 github.com/schumann-it/azure-b2c-sdk-for-go v0.8.2 h1:Ta0wkdJNfb5xTdEEB787eus9K2YidIvcV6Kx0MNfmnI=
 github.com/schumann-it/azure-b2c-sdk-for-go v0.8.2/go.mod h1:5frOD6VZv9Uij9Cb9z0v/ciQCn6qpnxYdGiTKOoopXU=
+github.com/schumann-it/azure-b2c-sdk-for-go v0.9.0 h1:/gCciaCARbV/vlzXVhGrh7WgW898uGCwkMvTAipxNv4=
+github.com/schumann-it/azure-b2c-sdk-for-go v0.9.0/go.mod h1:5frOD6VZv9Uij9Cb9z0v/ciQCn6qpnxYdGiTKOoopXU=
 github.com/sergi/go-diff v1.2.0 h1:XU+rvMAioB0UC3q1MFrIQy4Vo5/4VsRDQQXHsEya6xQ=
 github.com/sergi/go-diff v1.2.0/go.mod h1:STckp+ISIX8hZLjrqAeVduY0gWCT9IjLuqbuNXdaHfM=
 github.com/shopspring/decimal v1.2.0/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
