@@ -183,8 +183,8 @@ github.com/microsoft/kiota-serialization-multipart-go v1.0.0 h1:3O5sb5Zj+moLBiJy
 github.com/microsoft/kiota-serialization-multipart-go v1.0.0/go.mod h1:yauLeBTpANk4L03XD985akNysG24SnRJGaveZf+p4so=
 github.com/microsoft/kiota-serialization-text-go v1.0.0 h1:XOaRhAXy+g8ZVpcq7x7a0jlETWnWrEum0RhmbYrTFnA=
 github.com/microsoft/kiota-serialization-text-go v1.0.0/go.mod h1:sM1/C6ecnQ7IquQOGUrUldaO5wj+9+v7G2W3sQ3fy6M=
-github.com/microsoftgraph/msgraph-beta-sdk-go v0.98.0 h1:CgyqVHHlI4TZrPqetAPdk0/evsJNZHE4cAw3jepSu0o=
-github.com/microsoftgraph/msgraph-beta-sdk-go v0.98.0/go.mod h1:xOYVzb/U4rXgk6Pkc70LEd0+NzgDYSLjUPxo1OsD6hQ=
+github.com/microsoftgraph/msgraph-beta-sdk-go v0.101.0 h1:zKsJIvCbCAu1SM4hUyxXxvuaGRBEDce7lmINNpwEDkw=
+github.com/microsoftgraph/msgraph-beta-sdk-go v0.101.0/go.mod h1:aP9j69SltqRas7Z0xpy+qcyy6iPSP2BMzRftr9GFwmo=
 github.com/microsoftgraph/msgraph-sdk-go-core v1.1.0 h1:NB7c/n4Knj+TLaLfjsahhSqoUqoN/CtyNB0XIe/nJnM=
 github.com/microsoftgraph/msgraph-sdk-go-core v1.1.0/go.mod h1:M3w/5IFJ1u/DpwOyjsjNSVEA43y1rLOeX58suyfBhGk=
 github.com/mitchellh/copystructure v1.0.0/go.mod h1:SNtv71yrdKgLRyLFxmLdkAbkKEFWgYaq1OVrnRcwhnw=
@@ -215,7 +215,8 @@ github.com/rogpeppe/go-internal v1.12.0 h1:exVL4IDcn6na9z1rAb56Vxr+CgyK3nn3O+epU
 github.com/rogpeppe/go-internal v1.12.0/go.mod h1:E+RYuTGaKKdloAfM02xzb0FW3Paa99yedzYV+kq4uf4=
 github.com/russross/blackfriday v1.6.0 h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww=
 github.com/russross/blackfriday v1.6.0/go.mod h1:ti0ldHuxg49ri4ksnFxlkCfN+hvslNlmVHqNRXXJNAY=
-github.com/schumann-it/azure-b2c-sdk-for-go v0.9.0 h1:/gCciaCARbV/vlzXVhGrh7WgW898uGCwkMvTAipxNv4=
+github.com/schumann-it/azure-b2c-sdk-for-go v0.8.2 h1:Ta0wkdJNfb5xTdEEB787eus9K2YidIvcV6Kx0MNfmnI=
+github.com/schumann-it/azure-b2c-sdk-for-go v0.8.2/go.mod h1:5frOD6VZv9Uij9Cb9z0v/ciQCn6qpnxYdGiTKOoopXU=
 github.com/schumann-it/azure-b2c-sdk-for-go v0.9.0/go.mod h1:5frOD6VZv9Uij9Cb9z0v/ciQCn6qpnxYdGiTKOoopXU=
 github.com/sergi/go-diff v1.2.0 h1:XU+rvMAioB0UC3q1MFrIQy4Vo5/4VsRDQQXHsEya6xQ=
 github.com/sergi/go-diff v1.2.0/go.mod h1:STckp+ISIX8hZLjrqAeVduY0gWCT9IjLuqbuNXdaHfM=
