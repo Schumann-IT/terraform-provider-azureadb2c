@@ -7,9 +7,9 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.5.1
 	github.com/Azure/go-autorest/autorest/to v0.4.0
 	github.com/hashicorp/terraform-plugin-docs v0.18.0
-	github.com/hashicorp/terraform-plugin-framework v1.7.0
+	github.com/hashicorp/terraform-plugin-framework v1.8.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.12.0
-	github.com/hashicorp/terraform-plugin-go v0.22.1
+	github.com/hashicorp/terraform-plugin-go v0.22.2
 	github.com/hashicorp/terraform-plugin-testing v1.7.0
 	github.com/microsoftgraph/msgraph-beta-sdk-go v0.101.0
 	github.com/schumann-it/azure-b2c-sdk-for-go v0.9.0
@@ -104,7 +104,7 @@ require (
 	golang.org/x/tools v0.19.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240401170217-c3f982113cda // indirect
-	google.golang.org/grpc v1.63.0 // indirect
+	google.golang.org/grpc v1.63.2 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 	gopkg.in/op/go-logging.v1 v1.0.0-20160211212156-b2cb9fa56473 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
