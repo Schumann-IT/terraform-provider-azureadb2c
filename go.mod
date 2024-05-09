@@ -11,7 +11,7 @@ require (
 	github.com/hashicorp/terraform-plugin-framework-validators v0.12.0
 	github.com/hashicorp/terraform-plugin-go v0.22.2
 	github.com/hashicorp/terraform-plugin-testing v1.7.0
-	github.com/microsoftgraph/msgraph-beta-sdk-go v0.101.0
+	github.com/microsoftgraph/msgraph-beta-sdk-go v0.102.0
 	github.com/schumann-it/azure-b2c-sdk-for-go v0.10.0
 )
 
