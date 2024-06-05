@@ -7,9 +7,9 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.5.2
 	github.com/Azure/go-autorest/autorest/to v0.4.0
 	github.com/hashicorp/terraform-plugin-docs v0.19.2
-	github.com/hashicorp/terraform-plugin-framework v1.8.0
+	github.com/hashicorp/terraform-plugin-framework v1.9.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.12.0
-	github.com/hashicorp/terraform-plugin-go v0.22.2
+	github.com/hashicorp/terraform-plugin-go v0.23.0
 	github.com/hashicorp/terraform-plugin-testing v1.7.0
 	github.com/microsoftgraph/msgraph-beta-sdk-go v0.101.0
 	github.com/schumann-it/azure-b2c-sdk-for-go v0.10.0
